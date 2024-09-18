@@ -13,7 +13,6 @@ class Database
 
 		try {
 		  $this->conn = new PDO("mysql:host=$host;dbname=$dbName", $dbUser, $dbPass);
-		  //echo "connected successfully!";
 		}catch(PDOException $e) {
 		  echo "Connection failed: " . $e->getMessage();
 		}
