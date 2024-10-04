@@ -42,7 +42,7 @@
 				<?php if($answer['correct'] == 'yes'): ?>
 				style="background-color: lightgrey;"
 				<?php endif ?>>
-					<div><?= $answer['details'] ?></div>
+					<div><?= $answer['answer_text'] ?></div>
 					<small>Answer By:<?= $answer['username']?> </small>
 					<?php if($getQuestion['id'] == $_SESSION['user_id'] && $answer['correct'] == 'no'): ?>
 					<a href="mark-answer.php?q-id=<?= $getQuestion['id'] ?>&ans_id=<?= $answer['id'] ?>" class="btn btn-sm btn-primary">Mark as Right Answer</a>
@@ -51,14 +51,20 @@
 				<hr>
 			    <?php endforeach ?>
 				<?php if(isset($_SESSION['username'])): ?>
-					<?php
-					    if(isset($_POST['submit'])){
-					      $question->makeAnswer($getQuestion['id'],$_SESSION['user_id'],$_POST['details']);
-					      echo "Comment Submitted.";	
+				<?php if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+					    if (isset($_POST['answer_text'], $_SESSION['question_id'], $_SESSION['user_id'])) {
+					        $answer_text = $_POST['answer_text'];
+					        $question_id = $_POST['question_id'];
+					        $user_id = $_POST['user_id'];
+
+					        $question->makeAnswer($question_id, $user_id, $answer_text);
+					    } else {
+					        echo "Error: Missing required fields.";
 					    }
-					?>	
+					}	
+				?>	
 				<form class="form-group" action="" method="POST">
-					<textarea id="textarea" class="form-control" name="details"></textarea>
+					<textarea id="textarea" class="form-control" name="answer_text"></textarea>
 					<input type="submit" name="submit" value="Comment" class="btn btn-sm btn-success mt-3 mb-3">
 				</form>	
 			    <?php endif ?>

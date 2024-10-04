@@ -28,8 +28,13 @@ class Question extends Database
 	}
 	public function makeAnswer($q_id,$user_id,$answer)
 	{
-		$sql = "INSERT INTO answers (`id`, `question_id`, `user_id`, `details`, `correct`) VALUES ('$q_id','$user_id,'$answer')";
-		$this->exec($sql);		
+		if (empty($question_id) || empty($user_id) || empty($answer_text)) {
+        throw new InvalidArgumentException("Invalid input provided");
+    }
+		$query = "INSERT INTO answers (question_id, user_id, answer_text) VALUES ($question_id, $user_id, '$answer_text')";
+		$query = "INSERT INTO answers (question_id, user_id, answer_text) VALUES ($question_id, $user_id, '$answer_text')";
+		$this->db->exec($query, [$question_id, $user_id, $answer_text]);
+
 	}
 	public function getAnswers($q_id)
 	{

@@ -18,11 +18,18 @@ class Database
 		}
 	}
 
-	public function exec($sql)
+	public function exec($query, $params = [])
 	{
-		$statement = $this->conn->prepare($sql);
-    	$statement->execute();
+	    try {
+	        $stmt = $this->pdo->prepare($query);
+	        $stmt->execute($params);  // Bind parameters properly
+	        return true;
+	    } catch (PDOException $e) {
+	        echo 'Error: ' . $e->getMessage();
+	        return false;
+	    }
 	}
+
 
 	public function fetch($sql)
 	{
